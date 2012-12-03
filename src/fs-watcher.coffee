@@ -172,7 +172,7 @@ class DirWatcher
 # the given location according all passed options.
 class Watcher extends EventEmitter
 
-  constructor:(root, @pattern, @persistent = true, @recursive = false)->
+  constructor:(root, @pattern, @recursive = false, @persistent = true)->
     @config root
 
     # simple hack to allow user to listen for `watch` event even in the
@@ -190,5 +190,5 @@ class Watcher extends EventEmitter
     @tree = new DirWatcher @, @root, @
 
 # Single point exporting.
-exports.watch = (root, pattern, persistent, recursive)->
-  new Watcher root, pattern, persistent, recursive
+exports.watch = (root, pattern, recursive, persistent)->
+  new Watcher root, pattern, recursive, persistent
