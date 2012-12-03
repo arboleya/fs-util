@@ -59,8 +59,8 @@ class FileWatcher
     unless fs.existsSync @location
       @prev = @curr
       @curr = null
-      return    
-    
+      return
+
     @prev = @curr
     @curr = fs.statSync @location
 
