@@ -1,8 +1,10 @@
 build:
 	node_modules/coffee-script/bin/coffee -j lib/fs-util.js -c src/*.coffee
 
-test:
+test.clean:
 	rm -rf tests/tmp
+
+test: test.clean
 	node_modules/mocha/bin/mocha tests/* \
 		--compilers coffee:coffee-script \
 		--require should --reporter spec
