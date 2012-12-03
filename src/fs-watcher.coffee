@@ -15,7 +15,7 @@ class Win32FolderWatcher
 
   constructor:( @location, @listener, @interval = 30 )->
     @curr = fs.statSync @location
-    @interval_id = setInterval @check, 30
+    @interval_id = setInterval @check, @interval
 
   check:=>
     return @listener() unless fs.existsSync @location
