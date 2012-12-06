@@ -5,30 +5,7 @@ path = require 'path'
 util = require 'util'
 {EventEmitter} = require 'events'
 
-# Alternative approach for `fs.watch` used or watching folder under win32
-# platform, for more info check: https://github.com/joyent/node/issues/4337
-class Win32FolderWatcher
-
-  prev: null
-  curr: null
-  interval: null
-
-  constructor:( @location, @listener, @interval = 30 )->
-    @curr = fs.statSync @location
-    @interval_id = setInterval @check, @interval
-
-  check:=>
-    return @listener() unless fs.existsSync @location
-    @prev = @curr
-    @curr = fs.statSync @location
-    for k, v of @curr
-      if @prev[k] isnt v
-        return @listener()
-
-  close:->
-    clearInterval @interval_id
-
-
+# ...
 # Watch files for changes.
 class FileWatcher
 
@@ -47,6 +24,13 @@ class FileWatcher
   watch:()->
     options = persistent: @watcher.persistent
     @_ref = fs.watch @location, options, @onchange
+
+    # win32 comes to say `HI` - as Windows always rise EPERM error when deleting
+    # things, it's need to listen for an error and just suppress it. For more
+    # info check: https://github.com/joyent/node/issues/4337
+    if /^win/.test os.platform()
+      @_ref.on 'error', -> 
+    
     @watcher.emit 'watch', @
 
   unwatch:()->
@@ -73,7 +57,7 @@ class FileWatcher
     delete @parent.tree[@location]
     @watcher.emit 'delete', @
 
-
+# ...
 # Watch folder for changes.
 class DirWatcher
 
@@ -101,12 +85,15 @@ class DirWatcher
     @watcher.emit 'create', @ if @dispatch_created
 
   watch:()->
-    # win32 comes to say `HI`
-    if os.platform() is 'win32'
-      @_ref = new Win32FolderWatcher @location, @onchange
-    else
-      options = persistent: @watcher.persistent
-      @_ref = fs.watch @location, options, @onchange
+    options = persistent: @watcher.persistent
+    @_ref = fs.watch @location, options, @onchange
+
+    # win32 comes to say `HI` - as Windows always rise EPERM error when deleting
+    # things, it's need to listen for an error and just suppress it. For more
+    # info check: https://github.com/joyent/node/issues/4337
+    if /^win/.test os.platform()
+      @_ref.on 'error', -> 
+
 
     @watcher.emit 'watch', @
 
@@ -115,11 +102,15 @@ class DirWatcher
     @watcher.emit 'unwatch', @
 
   onchange:()=>
-    # skips change event when the folder is deleted and itself is who's
-    # dispatching it and not the parent folder (tricky)
+    # If folder is deleted
     unless fs.existsSync @location
       @prev = @curr
       @curr = null
+
+      # if the deleted folder IS THE ROOT FOLDER
+      if @location is @watcher.root
+        @delete()
+
       return
 
     # updating prev/curr stats
