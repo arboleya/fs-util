@@ -6,50 +6,52 @@ path = require 'path'
 fsu = require '../src/fs-watcher'
 
 # ...
-# reset tmp folder
-base_path = path.resolve "#{__dirname}/tmp"
-fs.rmdirSync base_path if fs.existsSync base_path
-fs.mkdirSync base_path
+# helper methods for tests #7 and #8
+build_paths = ->
+  [
+    (path.join __dirname, 'tmp/a/b/c/d/e/cinco.coffee'),
+    (path.join __dirname, 'tmp/a/b/c/d/e'),
+    (path.join __dirname, 'tmp/a/b/c/d/quatro.coffee'),
+    (path.join __dirname, 'tmp/a/b/c/d'),
+    (path.join __dirname, 'tmp/a/b/c/tres.coffee'),
+    (path.join __dirname, 'tmp/a/b/c'),
+    (path.join __dirname, 'tmp/a/b/dois.coffee'),
+    (path.join __dirname, 'tmp/a/b'),
+    (path.join __dirname, 'tmp/a/um.coffee'),
+    (path.join __dirname, 'tmp/a')
+  ]
+
+create_structure = ()->
+  # build dirs
+  fs.mkdirSync dir for dir in [
+    a = (path.join __dirname, 'a'),
+    b = (path.join __dirname, 'a/b'),
+    c = (path.join __dirname, 'a/b/c'),
+    d = (path.join __dirname, 'a/b/c/d'),
+    e = (path.join __dirname, 'a/b/c/d/e')
+  ]
+
+  # build files
+  fs.writeFileSync file, '' for file in [
+    (path.join a, 'um.coffee'),
+    (path.join b, 'dois.coffee'),
+    (path.join c, 'tres.coffee'),
+    (path.join d, 'quatro.coffee'),
+    (path.join e, 'cinco.coffee')
+  ]
+
+  # move structure into tmp folder
+  exec "cd #{__dirname} && mv a tmp/"
+
+delete_structure = ->
+  dirpath = path.join __dirname, 'tmp'
+  exec "cd #{dirpath} && rm -rf a"
 
 # ...
 # defining global watcher var
 watcher = null
-
-# ...
-# helper methods for tests #7 and #8
-build_paths =->
-  [
-    (path.resolve "#{__dirname}/tmp/a/b/c/d/e/cinco.coffee"),
-    (path.resolve "#{__dirname}/tmp/a/b/c/d/e"),
-    (path.resolve "#{__dirname}/tmp/a/b/c/d/quatro.coffee"),
-    (path.resolve "#{__dirname}/tmp/a/b/c/d"),
-    (path.resolve "#{__dirname}/tmp/a/b/c/tres.coffee"),
-    (path.resolve "#{__dirname}/tmp/a/b/c"),
-    (path.resolve "#{__dirname}/tmp/a/b/dois.coffee"),
-    (path.resolve "#{__dirname}/tmp/a/b"),
-    (path.resolve "#{__dirname}/tmp/a/um.coffee"),
-    (path.resolve "#{__dirname}/tmp/a")
-  ]
-
-create_structure = (after_create)->
-  dirs = 'a/b/c/d/e'
-  touches = "a/um.coffee
-            a/b/dois.coffee
-            a/b/c/tres.coffee
-            a/b/c/d/quatro.coffee
-            a/b/c/d/e/cinco.coffee"
-  cmd = "cd #{__dirname} && mkdir -p #{dirs} && touch #{touches}"
-  exec cmd, ()-> after_create()
-
-move_structure =->
-  from = path.resolve "#{__dirname}/a"
-  to = path.resolve "#{__dirname}/tmp"
-  exec "mv #{from} #{to}"
-
-delete_structure =->
-  dirpath = path.resolve "#{__dirname}/tmp/a"
-  exec "rm -rf #{dirpath}"
-
+base_path = path.join __dirname, 'tmp'
+fs.mkdirSync base_path
 
 
 # ...
@@ -126,7 +128,7 @@ describe 'When creating a file inside the watched folder', ->
 
 # ...
 # 5) updating file
-describe 'When updating this (1000ms delay needed here, pay no mind)', ->
+describe 'When updating this file (a little delay needed here, pay no mind)', ->
 
   it 'the `change` event should be emitted properly', (done)->
     
@@ -177,20 +179,19 @@ describe 'When moving an existent structure inside the watched tree', ->
       f.location.should.equal created_paths.shift()
 
     watcher.on 'watch', (f)->
-        f.location.should.equal watched_paths.shift()
-        if watched_paths.length is 0
-          watcher.removeAllListeners()
-          done()
+      f.location.should.equal watched_paths.shift()
+      if watched_paths.length is 0
+        watcher.removeAllListeners()
+        done()
 
-    # creating and moving the whole structure
-    create_structure -> move_structure()
+    create_structure()
 
 # ...
 # 8) Deleting a folder with many sub fs (folders and files)
 describe 'When deleting this structure', ->
 
   it 'the `delete` and `unwatch` events should be emitted properly for all files and folders', (done)->
-
+    
     # paths for comparison
     deleted_paths = build_paths()
     unwatched_paths = build_paths()
@@ -205,5 +206,4 @@ describe 'When deleting this structure', ->
         watcher.removeAllListeners()
         done()
 
-    # deleting the whole structure
     delete_structure()
