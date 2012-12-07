@@ -39,7 +39,7 @@ class FileWatcher
 
   onchange:()=>
     # skips change event when the file is deleted and itself is who's
-    # dispatching it and not the parent folder (tricky)
+    # dispatching it and not the parent dir (tricky)
     unless fs.existsSync @location
       @prev = @curr
       @curr = null
@@ -58,7 +58,7 @@ class FileWatcher
     @watcher.emit 'delete', @
 
 # ...
-# Watch folder for changes.
+# Watch dir for changes.
 class DirWatcher
 
   constructor:(@watcher, @location, @parent, @dispatch_created = false)->
@@ -102,12 +102,12 @@ class DirWatcher
     @watcher.emit 'unwatch', @
 
   onchange:()=>
-    # If folder is deleted
+    # If dir is deleted
     unless fs.existsSync @location
       @prev = @curr
       @curr = null
 
-      # if the deleted folder IS THE ROOT FOLDER
+      # if the deleted dir IS THE ROOT dir
       if @location is @watcher.root
         @delete()
 
@@ -117,13 +117,13 @@ class DirWatcher
     @prev = @curr
     @curr = fs.statSync @location
 
-    # getting a diff form the folder tree
+    # getting a diff form the dir tree
     ls = @diff()
 
-    # handling deleted files and folders
+    # handling deleted files and dirs
     deleted.delete() for deleted in ls.deleted
 
-    # handling created files and folders
+    # handling created files and dirs
     for created in ls.created
       if fs.statSync( created ).isDirectory()
         @tree[created] = new DirWatcher @watcher, created, @, true
@@ -159,7 +159,7 @@ class DirWatcher
     delete @parent.tree[@location]
     @watcher.emit 'delete', @
 
-# Hybrid watcher, handle the watching process for folder and files under
+# Hybrid watcher, handle the watching process for dir and files under
 # the given location according all passed options.
 class Watcher extends EventEmitter
 

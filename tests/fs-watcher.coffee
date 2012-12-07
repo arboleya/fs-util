@@ -40,7 +40,7 @@ create_structure = ()->
     (path.join e, 'cinco.coffee')
   ]
 
-  # move structure into tmp folder
+  # move structure into tmp dir
   exec "cd #{__dirname} && mv a tmp/"
 
 delete_structure = ->
@@ -56,7 +56,7 @@ fs.mkdirSync base_path
 
 describe '• FS Watcher', ->
   # ...
-  # 1) watching folder
+  # 1) watching dir
   describe 'When watching a directory tree', ->
     it 'the `watch` event should be emitted properly', (done)->
 
@@ -66,14 +66,14 @@ describe '• FS Watcher', ->
         done()
 
   # ...
-  # 2) creating folder
-  describe 'When creating a folder inside that tree', ->
+  # 2) creating dir
+  describe 'When creating a dir inside that tree', ->
     it 'the `watch` and `create` event should be emitted properly', (done)->
 
       dirpath = path.resolve "#{base_path}/app"
       created = false
 
-      # on folder creation, `create` event should come before the `watch` event
+      # on dir creation, `create` event should come before the `watch` event
       watcher.once 'create', (f)->
         created = true
         f.location.should.equal dirpath
@@ -86,15 +86,15 @@ describe '• FS Watcher', ->
       fs.mkdirSync dirpath
 
   # ...
-  # 3) deleting folder
-  describe 'When deleting this folder', ->
+  # 3) deleting dir
+  describe 'When deleting this dir', ->
 
     it 'the `unwatch` and `delete` events should be emitted properly', (done)->
 
       dirpath = path.resolve "#{base_path}/app"
       unwatched = false
 
-      # on folder deletion, `unwatch` event should come before the `delete` event
+      # on dir deletion, `unwatch` event should come before the `delete` event
       watcher.once 'unwatch', (f)->
         unwatched = true
         f.location.should.equal dirpath
@@ -108,7 +108,7 @@ describe '• FS Watcher', ->
 
   # ...
   # 4) creating file
-  describe 'When creating a file inside the watched folder', ->
+  describe 'When creating a file inside the watched dir', ->
 
     it 'the `created` and `watch` events should be emitted properly', (done)->
 
@@ -153,7 +153,7 @@ describe '• FS Watcher', ->
       filepath = path.resolve "#{base_path}/file.coffee"
       unwatched = false
 
-      # on folder deletion, `unwatch` event should come before the `delete` event
+      # on dir deletion, `unwatch` event should come before the `delete` event
       watcher.once 'unwatch', (f)->
         unwatched = true
         f.location.should.equal filepath
@@ -166,10 +166,10 @@ describe '• FS Watcher', ->
       fs.unlinkSync filepath
 
   # ...
-  # 7) Creating a folder with many sub fs (folders and files)
+  # 7) Creating a dir with many sub fs (dirs and files)
   describe 'When moving an existent structure inside the watched tree', ->
 
-    it 'the `create` and `watch` events should be emitted properly for all files and folders', (done)->
+    it 'the `create` and `watch` events should be emitted properly for all files and dirs', (done)->
 
       # paths for comparison
       created_paths = build_paths()
@@ -188,10 +188,10 @@ describe '• FS Watcher', ->
       create_structure()
 
   # ...
-  # 8) Deleting a folder with many sub fs (folders and files)
+  # 8) Deleting a dir with many sub fs (dirs and files)
   describe 'When deleting this structure', ->
 
-    it 'the `delete` and `unwatch` events should be emitted properly for all files and folders', (done)->
+    it 'the `delete` and `unwatch` events should be emitted properly for all files and dirs', (done)->
       
       # paths for comparison
       deleted_paths = build_paths()
