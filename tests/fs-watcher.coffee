@@ -6,20 +6,26 @@ path = require 'path'
 fsu = require '../src/fs-watcher'
 
 # ...
+# defining global watcher var
+watcher = null
+base_path = path.join __dirname, 'tmp-watcher'
+fs.mkdirSync base_path, '0755'
+
+# ...
 # helper methods for tests #7 and #8
 build_paths = ->
   ls = {}
   ls[location] = location for location in locations = [
-    (path.join __dirname, 'tmp/a/b/c/d/e/cinco.coffee'),
-    (path.join __dirname, 'tmp/a/b/c/d/e'),
-    (path.join __dirname, 'tmp/a/b/c/d/quatro.coffee'),
-    (path.join __dirname, 'tmp/a/b/c/d'),
-    (path.join __dirname, 'tmp/a/b/c/tres.coffee'),
-    (path.join __dirname, 'tmp/a/b/c'),
-    (path.join __dirname, 'tmp/a/b/dois.coffee'),
-    (path.join __dirname, 'tmp/a/b'),
-    (path.join __dirname, 'tmp/a/um.coffee'),
-    (path.join __dirname, 'tmp/a')
+    (path.join base_path, 'a/b/c/d/e/cinco.coffee'),
+    (path.join base_path, 'a/b/c/d/e'),
+    (path.join base_path, 'a/b/c/d/quatro.coffee'),
+    (path.join base_path, 'a/b/c/d'),
+    (path.join base_path, 'a/b/c/tres.coffee'),
+    (path.join base_path, 'a/b/c'),
+    (path.join base_path, 'a/b/dois.coffee'),
+    (path.join base_path, 'a/b'),
+    (path.join base_path, 'a/um.coffee'),
+    (path.join base_path, 'a')
   ]
   ls.length = locations.length
   ls
@@ -44,21 +50,10 @@ create_structure = ()->
   ]
 
   # move structure into tmp dir
-  exec "cd #{__dirname} && mv a tmp/"
+  exec "cd #{__dirname} && mv a #{base_path}"
 
 delete_structure = ->
-  dirpath = path.join __dirname, 'tmp'
-  exec "cd #{dirpath} && rm -rf a"
-
-version = fs.readFileSync (path.join __dirname, '../package.json'), 'utf-8'
-console.log '\nCurrent version is: ' + (JSON.parse version).version
-
-# ...
-# defining global watcher var
-watcher = null
-base_path = path.join __dirname, 'tmp'
-fs.mkdirSync base_path
-
+  exec "cd #{base_path} && rm -rf a"
 
 describe '• FS Watcher', ->
   # ...
