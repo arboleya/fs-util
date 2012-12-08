@@ -110,9 +110,12 @@ make build
 make test
 ````
 
-* Current output:
+* Current [output](https://raw.github.com/serpentem/fs-util/master/imgs/tests-passing.png):
 
 ````bash
+
+Current version is: 0.2.0
+
  • FS Watcher
     When watching a directory tree
       ✓ the `watch` event should be emitted properly 
