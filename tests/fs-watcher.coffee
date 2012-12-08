@@ -8,7 +8,8 @@ fsu = require '../src/fs-watcher'
 # ...
 # helper methods for tests #7 and #8
 build_paths = ->
-  [
+  ls = {}
+  ls[location] = location for location in locations = [
     (path.join __dirname, 'tmp/a/b/c/d/e/cinco.coffee'),
     (path.join __dirname, 'tmp/a/b/c/d/e'),
     (path.join __dirname, 'tmp/a/b/c/d/quatro.coffee'),
@@ -20,6 +21,8 @@ build_paths = ->
     (path.join __dirname, 'tmp/a/um.coffee'),
     (path.join __dirname, 'tmp/a')
   ]
+  ls.length = locations.length
+  ls
 
 create_structure = ()->
   # build dirs
@@ -172,17 +175,17 @@ describe '• FS Watcher', ->
     it 'the `create` and `watch` events should be emitted properly for all files and dirs', (done)->
 
       # paths for comparison
-      created_paths = build_paths()
-      watched_paths = build_paths()
+      ls = build_paths()
+      created = 0
+      watched = 0
 
       # setting up listeners
       watcher.on 'create', (f)->
-        f.location.should.equal created_paths.shift()
+        created++ if (f.location.should.equal ls[f.location])
 
       watcher.on 'watch', (f)->
-        f.location.should.equal watched_paths.shift()
-        if watched_paths.length is 0
-          watcher.removeAllListeners()
+        watched++ if (f.location.should.equal ls[f.location])
+        if watched is ls.length and created is ls.length
           done()
 
       create_structure()
@@ -193,18 +196,17 @@ describe '• FS Watcher', ->
 
     it 'the `delete` and `unwatch` events should be emitted properly for all files and dirs', (done)->
       
-      # paths for comparison
-      deleted_paths = build_paths()
-      unwatched_paths = build_paths()
+      ls = build_paths()
+      unwatched = 0
+      deleted = 0
 
       # setting up listeners
       watcher.on 'unwatch', (f)->
-        f.location.should.equal unwatched_paths.shift()
+        unwatched++ if (f.location.should.equal ls[f.location])
 
       watcher.on 'delete', (f)->
-        f.location.should.equal deleted_paths.shift()
-        if deleted_paths.length is 0
-          watcher.removeAllListeners()
+        deleted++ if (f.location.should.equal ls[f.location])
+        if unwatched is ls.length and deleted is ls.length
           done()
 
       delete_structure()
