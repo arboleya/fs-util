@@ -3,28 +3,36 @@ Incremental utilities for NodeJS File System API.
 [![Build Status](https://secure.travis-ci.org/serpentem/fs-util.png)](http://travis-ci.org/serpentem/fs-util)
 > Version 0.3.0
 
-# FS Watcher
-
-Provides the ability to watch an entire _*tree*_ of `dirs` and `files`.
-
 ## Compatibility
+
+It just works.
 
 * Linux
 * MacOSX
 * Windows
 
+# Documentation
+
+- [FS Watcher](#watcher)
+- [FS Tools](#tools)
+
+<a name="watcher"/>
+# FS Watcher
+
+Provides the ability to watch an entire _*tree*_ of `dirs` and `files`.
+
 ## Usage
 
 ````coffeescript
 fsu = require 'fs-util'
-watcher = fsu.watch [desired_path], [regex_filter], [recursive_notifications]
+watcher = fsu.watch [desired_path], [regex_pattern], [recursive_notifications]
 ````
 
 > `desired_path`
 
 The path to the `dir` you wanna watch (ie. 'my/path'), `file` is not accept.
 
-> `regex_filter`
+> `regex_pattern`
 
 The regex to filter only the files you wanna watch, i.e. `/.coffee$/m`.
 
@@ -86,13 +94,46 @@ The complete `tree` of subitems (`files` and `dirs`) under that point.
 
 * _Applies only when `f.type` is `dir`_
 
+<a name="tools"/>
+# FS Tools
+
+Provides functionalities such as `rm_rf`, `cp_r`, `mkdir_p`, `find` and `ls`.
+
+## Usage
+
+````coffeescript
+fsu = require 'fs-util'
+fsu.mkdirp [dir_path]
+fsu.touch [file_path], [encoding='utf-8']
+fsu.copy [from_path], [to_path]
+fsu.find [path], [regex_pattern], [include_dirs]
+fsu.ls [path]
+fsu.rm_rm [path]
+````
+
+> `*path`
+
+Absolute or relative `paths` are accepted, you take care of your things.
+
+> `encoding`
+
+The `file` encoding when `touching` it.
+
+> `regex_pattern`
+
+Your search pattern, i.e. `/.coffee$/m`.
+
+> `include_dirs`
+
+When `true` will include the `dirs` in the search, otherwise only `files`.
+
 # Installing
 
 ````bash
 npm install fs-util
 ````
 
-## Developing
+## Resolving dependencies
 
 ````bash
 cd fs-util && npm install
@@ -153,13 +194,3 @@ Current version is: 0.3.0
 
   15 tests complete (1 seconds)
 ````
-
-# TODO
-
-List of **TODO** features besides the current `[FS Tree Watcher].watch`:
-
-* `mkdir [-p]`
-* `rm [-r] [-f]`
-* `search`
-* `cp [-r]`
-* `mv`

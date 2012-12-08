@@ -1,8 +1,9 @@
 {
   "name": "fs-util",
   "version": "0.3.0",
-  "description": "Incremental utilities for NodeJS File System API.",
   "author": "Anderson Arboleya <anderson@arboleya.me>",
+  "description": "Incremental utilities for NodeJS File System API.",
+  "keywords": [ "fs", "util" ],
 
   "main": "lib/fs-util",
 
@@ -10,14 +11,12 @@
 
   "scripts": { "test": "make test" },
 
-  "engines" : { "node" : "0.8.x" },
-
   "repository": {
     "type": "git",
     "url": "git://github.com/serpentem/fs-util"
   },
 
-  "keywords": [ "fs", "util" ],
+  "engines" : { "node" : "0.8.x" },
 
   "devDependencies":{
     "coffee-script": "1.4.x",
