@@ -1,7 +1,7 @@
 Incremental utilities for NodeJS File System API.
 
 [![Build Status](https://secure.travis-ci.org/serpentem/fs-util.png)](http://travis-ci.org/serpentem/fs-util)
-> Version 0.2.0
+> Version 0.3.0
 
 # FS Watcher
 
@@ -113,10 +113,26 @@ make test
 * Current [output](https://raw.github.com/serpentem/fs-util/master/imgs/tests-passing.png):
 
 ````bash
+Current version is: 0.3.0
 
-Current version is: 0.2.0
 
- • FS Watcher
+  • FS Tools
+    When making a deep-dir structure
+      ✓ the structure must to be created 
+    When touching a file
+      ✓ the file must be touched 
+    When copying a structure
+      ✓ the structure must to be copied 
+    When searching a file
+      ✓ the search must to return the proper results 
+    When searching a directory
+      ✓ the search must to return the proper results 
+    When listing a directory
+      ✓ the list must to return the dir contents 
+    When removing a strucuture recursively
+      ✓ the structure must to removed recursively 
+
+  • FS Watcher
     When watching a directory tree
       ✓ the `watch` event should be emitted properly 
     When creating a dir inside that tree
@@ -130,12 +146,12 @@ Current version is: 0.2.0
     When deleting this file
       ✓ the `unwatch` and `delete` events should be emitted properly 
     When moving an existent structure inside the watched tree
-      ✓ the `create` and `watch` events should be emitted properly for all files and dirs (85ms)
+      ✓ the `create` and `watch` events should be emitted properly for all files and dirs 
     When deleting this structure
       ✓ the `delete` and `unwatch` events should be emitted properly for all files and dirs 
 
 
-  8 tests complete (1 seconds)
+  15 tests complete (1 seconds)
 ````
 
 # TODO
