@@ -2,7 +2,7 @@ build:
 	node_modules/coffee-script/bin/coffee -j lib/fs-util.js -c src/*.coffee
 
 test.clean:
-	rm -rf tests/tmp tests/a
+	rm -rf tests/tmp-* tests/a
 
 test: test.clean
 	node_modules/mocha/bin/mocha tests/* \
