@@ -50,6 +50,9 @@ delete_structure = ->
   dirpath = path.join __dirname, 'tmp'
   exec "cd #{dirpath} && rm -rf a"
 
+version = fs.readFileSync (path.join __dirname, '../package.json'), 'utf-8'
+console.log '\nCurrent version is: ' + (JSON.parse version).version
+
 # ...
 # defining global watcher var
 watcher = null
