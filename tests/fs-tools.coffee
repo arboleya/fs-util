@@ -3,7 +3,7 @@
 fs = require 'fs'
 path = require 'path'
 {exec} = require 'child_process'
-fsu = require '../src/fs-tools'
+fsu = require '../lib/fs-util'
 
 # ...
 # outputting version

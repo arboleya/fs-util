@@ -3,7 +3,7 @@
 fs = require 'fs'
 path = require 'path'
 {exec} = require 'child_process'
-fsu = require '../src/fs-watcher'
+fsu = require '../lib/fs-util'
 
 # ...
 # defining global watcher var
