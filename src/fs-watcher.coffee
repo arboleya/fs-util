@@ -188,7 +188,8 @@ class Watcher extends EventEmitter
     else if (fs.statSync @root).isFile()
       @tree[@root] = new FileWatcher @, @root, @
 
-  unwatch_all:( )->
+  close:( )->
+
     item = @tree[@root]
     if item.type is 'dir'
       item.unwatch true
