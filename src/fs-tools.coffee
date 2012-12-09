@@ -49,7 +49,7 @@ exports.cp_r = cp_r = (from, to)->
     dir_to = path.dirname file_to
 
     mkdir_p dir_to unless fs.existsSync dir_to
-    fs.writeFileSync file_to, (fs.readFileSync file_from, "utf-8")
+    (fs.createReadStream file_from).pipe (fs.createWriteStream file_to)
 
 exports.find = find = (folderpath, pattern, include_dirs=false)->
 

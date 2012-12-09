@@ -40,6 +40,8 @@ describe '• FS Tools', ->
       to = path.join base_path, 'copied'
       fsu.cp_r from, to
       filepath = path.join base_path, 'copied/a/b/c/tempfile.coffee'
+      (fs.existsSync filepath).should.equal true
+      (fs.statSync filepath).isFile().should.equal true
       (fs.readFileSync filepath).toString().should.equal ''
 
   # ...
