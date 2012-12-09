@@ -1,7 +1,7 @@
 Incremental utilities for NodeJS File System API.
 
 [![Build Status](https://secure.travis-ci.org/serpentem/fs-util.png)](http://travis-ci.org/serpentem/fs-util)
-> Version 0.3.0
+> Version 0.3.1
 
 ## Compatibility
 
@@ -154,8 +154,7 @@ make test
 * Current [output](https://raw.github.com/serpentem/fs-util/master/imgs/tests-passing.png):
 
 ````bash
-Current version is: 0.3.0
-
+Current version is: 0.3.1
 
   • FS Tools
     When making a deep-dir structure
@@ -190,7 +189,6 @@ Current version is: 0.3.0
       ✓ the `create` and `watch` events should be emitted properly for all files and dirs 
     When deleting this structure
       ✓ the `delete` and `unwatch` events should be emitted properly for all files and dirs 
-
 
   15 tests complete (1 seconds)
 ````
