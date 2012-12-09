@@ -4,7 +4,7 @@ build:
 test.clean:
 	rm -rf tests/tmp-* tests/a
 
-test: test.clean
+test: test.clean build
 	node_modules/mocha/bin/mocha tests/* \
 		--compilers coffee:coffee-script \
 		--require should --reporter spec
