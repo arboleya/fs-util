@@ -1,6 +1,9 @@
 build:
 	node_modules/coffee-script/bin/coffee -j lib/fs-util.js -c src/*.coffee
 
+watch:
+	node_modules/coffee-script/bin/coffee -wj lib/fs-util.js -c src/*.coffee
+
 test.clean:
 	rm -rf tests/tmp-* tests/a
 
