@@ -1,6 +1,6 @@
 {
   "name": "fs-util",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Anderson Arboleya <anderson@arboleya.me>",
   "description": "Incremental utilities for NodeJS File System API.",
   "keywords": [ "fs", "util" ],

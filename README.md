@@ -1,7 +1,7 @@
 Incremental utilities for NodeJS File System API.
 
 [![Build Status](https://secure.travis-ci.org/serpentem/fs-util.png)](http://travis-ci.org/serpentem/fs-util)
-> Version 0.3.1
+> Version 0.3.2
 
 ## Compatibility
 
@@ -63,6 +63,8 @@ watcher.on 'unwatch', (f)-> console.log 'UNWATCHED ' + [f.type, f.location]
 watcher.on 'create', (f)-> console.log 'CREATED ' + [f.type, f.location]
 watcher.on 'change', (f)-> console.log 'CHANGED ' + [f.type, f.location]
 watcher.on 'delete', (f)-> console.log 'DELETED ' + [f.type, f.location]
+
+watcher.close()
 ````
 
 ### Callback's argument
@@ -93,6 +95,16 @@ Current stat of the file, it's an instance of [fs.Stats](http://nodejs.org/api/f
 The complete `tree` of subitems (`files` and `dirs`) under that point.
 
 * _Applies only when `f.type` is `dir`_
+
+### Watcher's method
+
+Besides all the Event Emiter inherited methods, the `watcher` class has one more:
+
+> [watcher].close()
+
+When called, this method will forcely close all persistent watcher's process and
+removes all previously added listeners. Every file and folder is `unwatched`,
+events will pop normally for them, and after that the instance becomes useless.
 
 <a name="tools"/>
 # FS Tools
