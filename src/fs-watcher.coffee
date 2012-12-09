@@ -97,7 +97,10 @@ class DirWatcher
 
     @watcher.emit 'watch', @
 
-  unwatch:()->
+  unwatch:( propagate )->
+    if propagate
+      for location, item of @tree
+        item.unwatch propagate 
     @_ref.close()
     @watcher.emit 'unwatch', @
 
@@ -152,12 +155,13 @@ class DirWatcher
 
     return status
 
-  delete:->
-    item.delete() for location, item of @tree if @watcher.recursive
+  delete:( dispatch_event = true )->
+    for location, item of @tree
+      item.delete @watcher.recursive
     @unwatch()
     @parent.tree[@location] = null
     delete @parent.tree[@location]
-    @watcher.emit 'delete', @
+    @watcher.emit 'delete', @ if dispatch_event
 
 # Hybrid watcher, handle the watching process for dir and files under
 # the given location according all passed options.
@@ -173,12 +177,29 @@ class Watcher extends EventEmitter
     , 1
 
   config:( root )->
+    @tree = {}
     @root = path.resolve root
     unless fs.existsSync @root
       throw new Error "Not found: #{@root}"
 
   init:()->
-    @tree = new DirWatcher @, @root, @
+    if (fs.statSync @root).isDirectory()
+      @tree[@root] = new DirWatcher @, @root, @
+    else if (fs.statSync @root).isFile()
+      @tree[@root] = new FileWatcher @, @root, @
+
+  unwatch_all:( )->
+    item = @tree[@root]
+    if item.type is 'dir'
+      item.unwatch true
+    else
+      item.unwatch()
+
+    @removeAllListeners 'create'
+    @removeAllListeners 'watch'
+    @removeAllListeners 'change'
+    @removeAllListeners 'unwatch'
+    @removeAllListeners 'delete'
 
 # Single point exporting.
 exports.watch = (root, pattern, recursive, persistent)->
