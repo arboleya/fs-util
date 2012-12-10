@@ -131,7 +131,8 @@ class DirWatcher
       if fs.statSync( created ).isDirectory()
         @tree[created] = new DirWatcher @watcher, created, @, true
       else if fs.statSync( created ).isFile()
-        @tree[created] = new FileWatcher @watcher, created, @, true
+        if @watcher.pattern.test fullpath
+          @tree[created] = new FileWatcher @watcher, created, @, true
 
   diff:->
     prev = @tree
