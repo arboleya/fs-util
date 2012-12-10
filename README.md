@@ -1,7 +1,7 @@
 Incremental utilities for NodeJS File System API.
 
 [![Build Status](https://secure.travis-ci.org/serpentem/fs-util.png)](http://travis-ci.org/serpentem/fs-util)
-> Version 0.3.2
+> Version 0.3.3
 
 ## Compatibility
 
@@ -54,6 +54,9 @@ big ammount of `subdirs` and `files` is deleted.
  * delete
 
 ## Example
+
+Bellow is a very basic usage example that can be found in the
+[examples](https://github.com/serpentem/fs-util/tree/master/examples) folder.
 
 ````coffeescript
 fsu = require 'fs-util'
