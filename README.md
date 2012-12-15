@@ -1,11 +1,9 @@
 Incremental utilities for NodeJS File System API.
 
 [![Build Status](https://secure.travis-ci.org/serpentem/fs-util.png)](http://travis-ci.org/serpentem/fs-util)
-> Version 0.3.3
+> Version 0.3.4
 
-## Compatibility
-
-It just works.
+# Compatibility
 
 * Linux
 * MacOSX
@@ -13,14 +11,30 @@ It just works.
 
 # Documentation
 
-- [FS Watcher](#watcher)
-- [FS Tools](#tools)
+- [FS Watcher](#fs-watcher)
+  - [Usage](#fs-watcher-usage)
+  - [Events](#fs-watcher-events)
+  - [Example](#fs-watcher-example)
+      - [Callback](#fs-watcher-callback)
+      - [Method](#fs-watcher-method)
+- [FS Tools](#fs-tools)
+  - [Usage](#fs-tools-usage)
 
-<a name="watcher"/>
+# Setting up
+
+- [Installing](#installing)
+  - [Developing](#developing)
+  - [Building](#building)
+  - [Watching](#watching)
+  - [Testing](#testing)
+
+----
+<a name="fs-watcher"/>
 # FS Watcher
 
 Provides the ability to watch an entire _*tree*_ of `dirs` and `files`.
 
+<a name="fs-watcher-usage"/>
 ## Usage
 
 ````coffeescript
@@ -30,22 +44,23 @@ watcher = fsu.watch [desired_path], [regex_pattern], [recursive_notifications]
 
 > `desired_path`
 
-The path to the `dir` you wanna watch (ie. 'my/path'), `file` is not accept.
+The path to the `dir` or `file` you wanna watch.
 
 > `regex_pattern`
 
-The regex to filter only the files you wanna watch, i.e. `/.coffee$/m`.
+The regex to filter only the files you wanna watch.
 
 > `recursive_notifications`
 
 If `true` notifications will be fired for all files. If you delete a `dir`
-that has many `sub dirs` and `files`, an `unwatch` and `delete` events will be 
-ispatched for all the children `dirs` and `files` as well.
+that has many `sub dirs` and `files`, an `unwatch` and `delete` events will be
+dispatched for all the children `dirs` and `files` as well.
 
 If `false`, only one event will be dispatched for the `dir` that was actually
 deleted. It can save you an overhead of events popping up when a `dir` with
 big ammount of `subdirs` and `files` is deleted.
 
+<a name="fs-watcher-events"/>
 ## Events
  * watch
  * unwatch
@@ -53,6 +68,7 @@ big ammount of `subdirs` and `files` is deleted.
  * change
  * delete
 
+<a name="fs-watcher-example"/>
 ## Example
 
 Bellow is a very basic usage example that can be found in the
@@ -70,6 +86,7 @@ watcher.on 'delete', (f)-> console.log 'DELETED ' + [f.type, f.location]
 watcher.close()
 ````
 
+<a name="fs-watcher-callback"/>
 ### Callback's argument
 
 All callbacks receives only *one* argument which is the related `[f]ile` to
@@ -99,6 +116,7 @@ The complete `tree` of subitems (`files` and `dirs`) under that point.
 
 * _Applies only when `f.type` is `dir`_
 
+<a name="fs-watcher-method"/>
 ### Watcher's method
 
 Besides all the Event Emiter inherited methods, the `watcher` class has one more:
@@ -109,11 +127,13 @@ When called, this method will forcely close all persistent watcher's process and
 removes all previously added listeners. Every file and folder is `unwatched`,
 events will pop normally for them, and after that the instance becomes useless.
 
-<a name="tools"/>
+----
+<a name="fs-tools"/>
 # FS Tools
 
 Provides functionalities such as `rm_rf`, `cp_r`, `mkdir_p`, `find` and `ls`.
 
+<a name="fs-tools-usage"/>
 ## Usage
 
 ````coffeescript
@@ -142,25 +162,52 @@ Your search pattern, i.e. `/.coffee$/m`.
 
 When `true` will include the `dirs` in the search, otherwise only `files`.
 
+----
+<a name="installing"/>
 # Installing
+
+Remembers that you need to install fs-util locally in order to use it as a LIB.
+You will need to `require 'fs-util` in you script, there's no reason to install
+it globally with `-g`, `fs-util` won't work directly in the command line.
+
+At least for now.
 
 ````bash
 npm install fs-util
 ````
 
-## Resolving dependencies
+<a name="developing"/>
+## Developing
+
+In order to contribute you will need to `fork`, `clone` and initialize the env.
 
 ````bash
+git clone git@github.com:[username]/fs-util
 cd fs-util && npm install
 ````
 
+<a name="building"/>
 ### Building
+
+Build the `src/*.coffee` files to `lib/*.js`.
 
 ````bash
 make build
 ````
 
+<a name="watching"/>
+### Watching
+
+Continuously building in `watch` mode.
+
+````bash
+make watch
+````
+
+<a name="testing"/>
 ### Testing
+
+Running tests suite.
 
 ````bash
 make test
