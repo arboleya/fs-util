@@ -78,9 +78,9 @@ class DirWatcher
         dir = new DirWatcher @watcher, fullpath, @, @dispatch_created
         @tree[fullpath] = dir
       else if fs.statSync( fullpath ).isFile()
-        continue unless @watcher.pattern.test fullpath
-        file = new FileWatcher @watcher, fullpath, @, @dispatch_created
-        @tree[fullpath] = file
+        if @watcher.pattern.test fullpath
+          file = new FileWatcher @watcher, fullpath, @, @dispatch_created
+          @tree[fullpath] = file
 
     @watcher.emit 'create', @ if @dispatch_created
 
@@ -131,7 +131,6 @@ class DirWatcher
       if fs.statSync( created ).isDirectory()
         @tree[created] = new DirWatcher @watcher, created, @, true
       else if fs.statSync( created ).isFile()
-        if @watcher.pattern.test created
           @tree[created] = new FileWatcher @watcher, created, @, true
 
   diff:->
@@ -140,7 +139,9 @@ class DirWatcher
 
     for name in (fs.readdirSync @location)
       fullpath = path.resolve "#{@location}/#{name}"
-      curr[fullpath] = fullpath
+      isdir = (fs.statSync fullpath).isDirectory()
+      if isdir or @watcher.pattern.test fullpath
+        curr[fullpath] = fullpath
 
     status = deleted: [], created: []
 
