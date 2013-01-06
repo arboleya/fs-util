@@ -35,6 +35,10 @@ exports.mkdir_p = mkdir_p = (fullpath, mode='0755')->
 
   return true
 
+exports.cp = cp = (from, to)->
+
+  return fs.writeFileSync to, (fs.readFileSync from) unless fs.statSync(from).isDirectory()
+
 exports.cp_r = cp_r = (from, to)->
 
   from = path.resolve from
