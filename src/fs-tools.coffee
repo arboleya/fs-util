@@ -46,8 +46,6 @@ exports.cp_r = cp_r = (from, to)->
 
   from = (from.slice 0, -1)  if (from.slice -1) == '/'
   to = (to.slice 0, -1)  if (to.slice -1) == '/'
-
-  return fs.writeFileSync to, (fs.readFileSync from) unless fs.statSync(from).isDirectory()
   
   for file_from in (files = find from, /.*/, false)
     file_to = file_from.replace from, to
