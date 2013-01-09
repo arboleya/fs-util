@@ -45,8 +45,8 @@ describe '• FS Tools', ->
       (fs.readFileSync filepath).toString().should.equal ''
 
   # 4) cp
-  describe 'When copying a single file', ->
-    it 'the file must to be copied', ->
+  # describe 'When copying a single file', ->
+    # it 'the file must to be copied', ->
       # from = path.join base_path, 'created/a/b/c/tempfile.coffee'
       # to = path.join base_path, 'created/a/b/c/tempfile-copy.coffee'
       # fsu.cp from, to
