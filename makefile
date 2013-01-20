@@ -7,6 +7,15 @@ watch:
 test.clean:
 	rm -rf tests/tmp-* tests/a
 
+bump.minor:
+	node_modules/coffee-script/bin/coffee build/bumper.coffee --minor
+
+bump.major:
+	node_modules/coffee-script/bin/coffee build/bumper.coffee --major
+
+bump.patch:
+	node_modules/coffee-script/bin/coffee build/bumper.coffee --patch
+
 test: test.clean build
 	node_modules/mocha/bin/mocha tests/* \
 		--compilers coffee:coffee-script \
