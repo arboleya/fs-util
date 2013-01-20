@@ -1,36 +1,48 @@
+.PHONY: build
+
+CS=node_modules/coffee-script/bin/coffee
+VERSION=`$(CS) build/bumper --version`
+
+setup:
+	sudo npm link
+
+
 build:
-	node_modules/coffee-script/bin/coffee -j lib/fs-util.js -c src/*.coffee
+	$(CS) -j lib/fs-util.js -c src/*.coffee
 
 watch:
-	node_modules/coffee-script/bin/coffee -wj lib/fs-util.js -c src/*.coffee
+	$(CS) -wj lib/fs-util.js -c src/*.coffee
+
 
 test.clean:
 	rm -rf tests/tmp-* tests/a
-
-bump.minor:
-	node_modules/coffee-script/bin/coffee build/bumper.coffee --minor
-
-bump.major:
-	node_modules/coffee-script/bin/coffee build/bumper.coffee --major
-
-bump.patch:
-	node_modules/coffee-script/bin/coffee build/bumper.coffee --patch
 
 test: test.clean build
 	node_modules/mocha/bin/mocha tests/* \
 		--compilers coffee:coffee-script \
 		--require should --reporter spec
 
+
+bump.minor:
+	$(CS) build/bumper.coffee --minor
+
+bump.major:
+	$(CS) build/bumper.coffee --major
+
+bump.patch:
+	$(CS) build/bumper.coffee --patch
+
+
 publish:
-	git tag $(v)
-	git push origin $(v)
+	git tag $(VERSION)
+	git push origin $(VERSION)
 	git push origin master
 	npm publish
 
 re-publish:
-	git tag -d $(v)
-	git tag $(v)
-	git push origin :$(v)
-	git push origin $(v)
+	git tag -d $(VERSION)
+	git tag $(VERSION)
+	git push origin :$(VERSION)
+	git push origin $(VERSION)
 	git push origin master -f
 	npm publish -f
