@@ -44,8 +44,20 @@ describe '• FS Tools', ->
       (fs.statSync filepath).isFile().should.equal true
       (fs.readFileSync filepath).toString().should.equal ''
 
+  # 4) cp
+  describe 'When copying a single file', ->
+    it 'the file must to be copied', ->
+      from = path.join base_path, 'created/a/b/c/tempfile.coffee'
+      to = path.join base_path, 'created/a/b/c/tempfile-copy.coffee'
+      fsu.cp from, to
+      filepath = path.join base_path, 'created/a/b/c/tempfile-copy.coffee'
+      (fs.existsSync filepath).should.equal true
+      (fs.statSync filepath).isFile().should.equal true
+      (fs.readFileSync filepath).toString().should.equal ''
+      (fs.unlinkSync filepath)
+
   # ...
-  # 4) finding with dirs
+  # 5) finding with dirs
   describe 'When searching a file', ->
     it 'the search must to return the proper results', ->
       found = fsu.find path.join base_path, /.coffee$/m, true
@@ -57,7 +69,7 @@ describe '• FS Tools', ->
       (found[1] is a or found[1] is b).should.equal true
 
   # ...
-  # 5) finding without dirs
+  # 6) finding without dirs
   describe 'When searching a directory', ->
     it 'the search must to return the proper results', ->
       check = [
@@ -69,7 +81,7 @@ describe '• FS Tools', ->
       (found[1] is a or found[1] is b).should.equal true
 
   # ...
-  # 5) updating file
+  # 7) updating file
   describe 'When listing a directory', ->
     it 'the list must to return the dir contents', ->
       fullpath = path.join base_path, 'copied'
@@ -78,7 +90,7 @@ describe '• FS Tools', ->
       res[0].should.equal (path.join fullpath, 'a')
 
   # ...
-  # 6) deleting file
+  # 8) deleting file
   describe 'When removing a strucuture recursively', ->
     it 'the structure must to removed recursively', ->
       fullpath = path.join base_path, 'copied'

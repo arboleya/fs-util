@@ -35,6 +35,10 @@ exports.mkdir_p = mkdir_p = (fullpath, mode='0755')->
 
   return true
 
+exports.cp = cp = (from, to)->
+
+  return fs.writeFileSync to, (fs.readFileSync from) unless fs.statSync(from).isDirectory()
+
 exports.cp_r = cp_r = (from, to)->
 
   from = path.resolve from
@@ -42,14 +46,13 @@ exports.cp_r = cp_r = (from, to)->
 
   from = (from.slice 0, -1)  if (from.slice -1) == '/'
   to = (to.slice 0, -1)  if (to.slice -1) == '/'
-
+  
   for file_from in (files = find from, /.*/, false)
-
     file_to = file_from.replace from, to
     dir_to = path.dirname file_to
 
     mkdir_p dir_to unless fs.existsSync dir_to
-    fs.writeFileSync file_to, (fs.readFileSync file_from)
+    cp file_from, file_to
 
 exports.find = find = (folderpath, pattern, include_dirs=false)->
 
