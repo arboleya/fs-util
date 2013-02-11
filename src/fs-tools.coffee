@@ -28,7 +28,7 @@ exports.mkdir_p = mkdir_p = (fullpath, mode='0755')->
     exists = fs.existsSync folderpath
 
     if exists and index is folders.length - 1
-      throw new Error error( "Folder exists: #{folder.red}" )
+      throw new Error "Folder exists: #{folder.red}"
       return false
     else if !exists
       fs.mkdirSync folderpath, mode
