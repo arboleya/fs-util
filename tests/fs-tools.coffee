@@ -60,7 +60,7 @@ describe '• FS Tools', ->
   # 5) finding with dirs
   describe 'When searching a file', ->
     it 'the search must to return the proper results', ->
-      found = fsu.find path.join base_path, /.coffee$/m, true
+      found = fsu.find (path.join base_path), /.coffee$/m, true
       check = [
         a = (path.join base_path, 'created/a/b/c/tempfile.coffee'),
         b = (path.join base_path, 'copied/a/b/c/tempfile.coffee')
@@ -76,7 +76,7 @@ describe '• FS Tools', ->
         a = (path.join base_path, 'created/a/b/c/tempfile.coffee'),
         b = (path.join base_path, 'copied/a/b/c/tempfile.coffee')
       ]
-      found = fsu.find path.join base_path, /c*/m, false
+      found = fsu.find (path.join base_path), /c*/m, false
       (found[0] is a or found[0] is b).should.equal true
       (found[1] is a or found[1] is b).should.equal true
 
