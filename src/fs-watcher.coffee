@@ -171,7 +171,7 @@ class Watcher extends EventEmitter
 
   constructor:(root, @pattern, @recursive = false, @persistent = true)->
     @config root
-    @pattern or = /.*/
+    @pattern ?= /.*/
 
     # simple hack to allow user to listen for `watch` event even in the
     # initialization
