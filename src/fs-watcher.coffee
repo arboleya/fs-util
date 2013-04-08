@@ -78,9 +78,11 @@ class DirWatcher
         dir = new DirWatcher @watcher, fullpath, @, @dispatch_created
         @tree[fullpath] = dir
       else if fs.statSync( fullpath ).isFile()
-        if @watcher.pattern.test fullpath
-          file = new FileWatcher @watcher, fullpath, @, @dispatch_created
-          @tree[fullpath] = file
+        for pattern in @watcher.patterns
+          if pattern.test fullpath
+            file = new FileWatcher @watcher, fullpath, @, @dispatch_created
+            @tree[fullpath] = file
+            break
 
     @watcher.emit 'create', @ if @dispatch_created
 
@@ -140,8 +142,11 @@ class DirWatcher
     for name in (fs.readdirSync @location)
       fullpath = path.resolve "#{@location}/#{name}"
       isdir = (fs.statSync fullpath).isDirectory()
-      if isdir or @watcher.pattern.test fullpath
-        curr[fullpath] = fullpath
+
+      for pattern in @watcher.patterns
+        if isdir or @watcher.pattern.test fullpath
+          curr[fullpath] = fullpath
+          break
 
     status = deleted: [], created: []
 
@@ -169,9 +174,9 @@ class DirWatcher
 # the given location according all passed options.
 class Watcher extends EventEmitter
 
-  constructor:(root, @pattern, @recursive = false, @persistent = true)->
+  constructor:(root, patterns, @recursive = false, @persistent = true)->
     @config root
-    @pattern ?= /.*/
+    @patterns ?= [].concat (@patterns or /.*/)
 
     # simple hack to allow user to listen for `watch` event even in the
     # initialization
@@ -206,5 +211,5 @@ class Watcher extends EventEmitter
     @removeAllListeners 'delete'
 
 # Single point exporting.
-exports.watch = (root, pattern, recursive, persistent)->
-  new Watcher root, pattern, recursive, persistent
+exports.watch = (root, patterns, recursive, persistent)->
+  new Watcher root, patterns, recursive, persistent

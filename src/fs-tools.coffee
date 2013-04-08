@@ -54,21 +54,29 @@ exports.cp_r = cp_r = (from, to)->
     mkdir_p dir_to unless fs.existsSync dir_to
     cp file_from, file_to
 
-exports.find = find = (folderpath, pattern, include_dirs=false)->
+exports.find = find = (folderpath, patterns, include_dirs=false)->
 
   found = []
+  patterns = [].concat patterns
   files = fs.readdirSync folderpath
 
   for file in files
 
     filepath = path.join folderpath, file
     if (fs.statSync filepath).isDirectory()
-      if include_dirs and filepath.match pattern
-        found = found.concat filepath
-      found_under = find filepath, pattern, include_dirs
+
+      if include_dirs
+        for pattern in patterns
+          if pattern.test filepath
+            found = found.concat filepath
+            break
+
+      found_under = find filepath, patterns, include_dirs
       found = found.concat found_under
     else
-      found.push filepath if filepath.match pattern
+      for pattern in patterns
+        if pattern.test filepath
+          found.push filepath
 
   return found
 
