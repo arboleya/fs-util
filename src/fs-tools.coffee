@@ -57,7 +57,7 @@ exports.cp_r = cp_r = (from, to)->
 exports.find = find = (folderpath, patterns, include_dirs=false)->
 
   found = []
-  patterns = [].concat patterns
+  patterns = [].concat (patterns or /\.+/)
   files = fs.readdirSync folderpath
 
   for file in files
