@@ -1,6 +1,6 @@
 Incremental utilities for NodeJS File System API.
 
-[![Build Status](https://secure.travis-ci.org/serpentem/fs-util.png)](http://travis-ci.org/serpentem/fs-util)
+[![Build Status](https://secure.travis-ci.org/serpentem/fs-util.png)](http://travis-ci.org/serpentem/fs-util) [![Dependency Status](https://gemnasium.com/serpentem/fs-util.png)](https://gemnasium.com/serpentem/fs-util)
 > Version 0.3.11
 
 # Compatibility
