@@ -144,7 +144,7 @@ class DirWatcher
       isdir = (fs.statSync fullpath).isDirectory()
 
       for pattern in @watcher.patterns
-        if isdir or @watcher.pattern.test fullpath
+        if isdir or pattern.test fullpath
           curr[fullpath] = fullpath
           break
 
@@ -176,7 +176,7 @@ class Watcher extends EventEmitter
 
   constructor:(root, patterns, @recursive = false, @persistent = true)->
     @config root
-    @patterns ?= [].concat (@patterns or /.*/)
+    @patterns = [].concat (patterns or /.+/)
 
     # simple hack to allow user to listen for `watch` event even in the
     # initialization
