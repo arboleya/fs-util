@@ -9,7 +9,10 @@
 
   "directories": { "lib": "./lib", "test": "./tests" },
 
-  "scripts": { "test": "make test" },
+  "scripts": {
+    "test": "make test",
+    "postinstall": "coffee -j lib/fs-util.js -c src"
+  },
 
   "repository": {
     "type": "git",
@@ -18,6 +21,10 @@
 
   "engines": {
     "node": ">=0.8.0 <0.10.x"
+  },
+
+  "dependencies":{
+    "source-map-support": "0.1.x"
   },
 
   "devDependencies":{
