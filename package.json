@@ -13,8 +13,7 @@
   },
 
   "scripts": {
-    "test": "make test",
-    "postinstall": "coffee -j lib/fs-util.js -c src"
+    "test": "make test"
   },
 
   "repository": {
@@ -27,11 +26,11 @@
   },
 
   "dependencies":{
-    "coffee-script": "1.6.x",
     "source-map-support": "0.1.x"
   },
 
   "devDependencies":{
+    "coffee-script": "1.6.x",
     "mocha": "1.9.x",
     "should": "1.2.x"
   }
