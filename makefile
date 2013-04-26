@@ -4,7 +4,7 @@ CS=node_modules/coffee-script/bin/coffee
 VERSION=`$(CS) build/bumper.coffee --version`
 
 setup:
-	sudo npm link
+	npm install
 
 
 build:
