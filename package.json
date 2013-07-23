@@ -25,9 +25,7 @@
     "node": ">= 0.8"
   },
 
-  "dependencies":{
-    "source-map-support": "0.1.x"
-  },
+  "dependencies":{},
 
   "devDependencies":{
     "coffee-script": "1.6.x",
