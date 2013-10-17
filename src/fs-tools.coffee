@@ -46,7 +46,7 @@ exports.cp_r = cp_r = (from, to)->
 
   from = (from.slice 0, -1)  if (from.slice -1) == '/'
   to = (to.slice 0, -1)  if (to.slice -1) == '/'
-  
+
   for file_from in (files = find from, /.*/, false)
     file_to = file_from.replace from, to
     dir_to = path.dirname file_to
@@ -86,6 +86,6 @@ exports.ls = ls = (folderpath)->
 
   for file in files
     filepath = path.join folderpath, file
-    found.push filepath if (fs.statSync filepath).isDirectory()
+    found.push filepath
 
   return found
