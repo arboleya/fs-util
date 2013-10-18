@@ -91,7 +91,7 @@ describe '• FS Tools', ->
       fullpath = path.join base_path, 'created/a'
       hidden = path.join base_path, 'created/a/.hidden_file'
       fsu.touch hidden
-      res = fsu.ls fullpath, false
+      res = fsu.ls fullpath, true
       res.length.should.equal 3
 
   # ...

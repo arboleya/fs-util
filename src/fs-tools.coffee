@@ -80,14 +80,14 @@ exports.find = find = (folderpath, patterns, include_dirs=false)->
 
   return found
 
-exports.ls = ls = (folderpath, show_hidden=true)->
+exports.ls = ls = (folderpath, exclude_hidden=false)->
   found = []
   files = fs.readdirSync folderpath
 
   for file in files
     filepath = path.join folderpath, file
 
-    if show_hidden
+    unless exclude_hidden
       found.push filepath
     else
       filename = filepath.split("/").pop()
