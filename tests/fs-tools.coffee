@@ -87,6 +87,13 @@ describe '• FS Tools', ->
       res = fsu.ls fullpath
       res.length.should.equal 3
 
+    it 'the list must to return the dir contents without hidden files', ->
+      fullpath = path.join base_path, 'created/a'
+      hidden = path.join base_path, 'created/a/.hidden_file'
+      fsu.touch hidden
+      res = fsu.ls fullpath, false
+      res.length.should.equal 3
+
   # ...
   # 8) deleting file
   describe 'When removing a strucuture recursively', ->
