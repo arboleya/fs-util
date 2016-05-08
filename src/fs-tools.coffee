@@ -2,7 +2,7 @@ path =  require 'path'
 fs = require 'fs'
 
 exports.touch = touch = (filepath, encoding='utf-8')->
-  dir_to = path.dirname touch
+  dir_to = path.dirname filepath
   fs.writeFileSync filepath, '', encoding
 
 exports.rm_rf = rm_rf = (folderpath, root=true)->
